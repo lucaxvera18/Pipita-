@@ -5,9 +5,9 @@
     --color-dorado-sombra: #a16c0b;
     --color-blanco-reflejo: rgba(255, 255, 255, 0.7);
     --color-fondo-inicial: #2c3e50;
-    --color-pastel-claro: #fcf4f7; /* Rosa muy claro */
-    --color-pastel-medio: #fbe6ec; /* Rosa un poco más oscuro */
-    --color-pastel-oscuro: #d9a7c7; /* Morado pastel */
+    --color-pastel-claro: #fcf4f7;
+    --color-pastel-medio: #fbe6ec;
+    --color-pastel-oscuro: #d9a7c7;
     --color-rojo-corazon: #e91e63;
     --color-texto-oscuro: #4a4a4a;
 }
@@ -15,13 +15,12 @@
 body {
     margin: 0;
     overflow: hidden;
-    font-family: 'Fredoka One', cursive; /* Fuente general más moderna */
+    font-family: 'Fredoka One', cursive;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-fondo-inicial);
 }
 
-/* --- Pantalla Inicial --- */
 #pantalla-inicial {
     display: flex;
     justify-content: center;
@@ -34,28 +33,25 @@ body {
 
 #boton-magico {
     padding: 20px 40px;
-    font-family: 'Press Start 2P', cursive; /* Fuente pixel para el botón */
+    font-family: 'Press Start 2P', cursive;
     font-size: 18px;
     color: #fff;
     background-color: var(--color-dorado-medio);
     border: none;
-    border-radius: 10px; /* Bordes redondeados para un look más suave */
+    border-radius: 10px;
     cursor: pointer;
     position: absolute;
     text-shadow: 2px 2px var(--color-dorado-sombra);
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transición suave */
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-user-select: none; /* Prefijo para Safari */
     user-select: none;
-    -webkit-user-select: none;
-    
-    /* Estilo 3D */
     box-shadow: 
-        inset 0 -8px 0 rgba(0,0,0,0.3), /* Sombra inferior */
-        0 8px 0 var(--color-dorado-sombra), /* Sombra exterior para profundidad */
-        0 15px 25px rgba(0,0,0,0.4); /* Sombra flotante */
-    transform: translateY(0); /* Posición inicial para la animación de click */
+        inset 0 -8px 0 rgba(0,0,0,0.3),
+        0 8px 0 var(--color-dorado-sombra),
+        0 15px 25px rgba(0,0,0,0.4);
+    transform: translateY(0);
 }
 
-/* Efecto de reflejo blanco tipo pixel art */
 #boton-magico::before {
     content: '';
     position: absolute;
@@ -65,21 +61,21 @@ body {
     height: 8px;
     background: var(--color-blanco-reflejo);
     border-radius: 5px;
-    transform: skewX(-20deg); /* Menos inclinación para un reflejo más suave */
-    filter: blur(1px); /* Suaviza el reflejo */
+    transform: skewX(-20deg);
+    filter: blur(1px);
 }
 
 #boton-magico:active {
-    transform: translateY(4px); /* Efecto de presionar el botón */
+    transform: translateY(4px);
     box-shadow: 
         inset 0 -4px 0 rgba(0,0,0,0.3),
         0 4px 0 var(--color-dorado-sombra),
         0 8px 15px rgba(0,0,0,0.3);
 }
 
-/* Animaciones de luces y latido */
 .luces {
     animation: luces-coloridas 1s infinite linear, latido 1s infinite ease-in-out;
+    -webkit-animation: luces-coloridas 1s infinite linear, latido 1s infinite ease-in-out; /* Prefijo para Safari */
 }
 
 @keyframes luces-coloridas {
@@ -92,10 +88,9 @@ body {
 
 @keyframes latido {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); } /* Latido más sutil */
+    50% { transform: scale(1.05); }
 }
 
-/* --- Pantalla Final --- */
 #pantalla-final {
     position: fixed;
     top: 0;
@@ -110,7 +105,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease-in, visibility 0s 0.7s;
-    overflow: hidden; /* Para que los brillos no se salgan */
+    overflow: hidden;
 }
 
 #pantalla-final.visible {
@@ -120,20 +115,20 @@ body {
     transition-delay: 0s;
 }
 
-/* Brillantes de fondo */
 .brillos-fondo {
     position: absolute;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    overflow: hidden; /* Asegura que los brillos no se salgan */
+    overflow: hidden;
     background: 
         radial-gradient(circle at 15% 15%, rgba(255,255,255,0.2) 2%, transparent 10%),
         radial-gradient(circle at 70% 80%, rgba(255,255,255,0.15) 3%, transparent 12%),
         radial-gradient(circle at 40% 60%, rgba(255,255,255,0.1) 2.5%, transparent 15%),
         radial-gradient(circle at 85% 25%, rgba(255,255,255,0.25) 2%, transparent 10%);
-    background-size: 800% 800%; /* Para que las estrellas se muevan */
+    background-size: 800% 800%;
     animation: mover-brillos 20s linear infinite;
+    -webkit-animation: mover-brillos 20s linear infinite; /* Prefijo para Safari */
 }
 
 @keyframes mover-brillos {
@@ -141,18 +136,17 @@ body {
     100% { background-position: 100% 100%; }
 }
 
-
 .contenido-final {
     text-align: center;
     transform: scale(0.5);
     opacity: 0;
-    transition: all 0.6s ease-out 0.5s; /* Retraso para que aparezca después del zoom */
+    transition: all 0.6s ease-out 0.5s;
     padding: 25px;
-    z-index: 1; /* Asegura que el contenido esté por encima de los brillos */
-    background: rgba(255, 255, 255, 0.5); /* Fondo semitransparente para el contenido */
-    border-radius: 15px; /* Bordes redondeados */
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    max-width: 90%; /* Ancho máximo para el cartel */
+    max-width: 90%;
 }
 
 #pantalla-final.visible .contenido-final {
@@ -161,30 +155,30 @@ body {
 }
 
 .ramo-flores {
-    width: 220px; /* Tamaño un poco más grande */
+    width: 220px;
     height: auto;
     margin-bottom: 35px;
     image-rendering: pixelated;
-    filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.3)); /* Sombra más pronunciada */
+    filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.3));
 }
 
 .cartel-mensaje {
-    background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente para el cartel */
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     padding: 20px 25px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .mensaje-principal {
-    font-family: 'Fredoka One', cursive; /* Fuente más amigable para el mensaje principal */
+    font-family: 'Fredoka One', cursive;
     font-size: clamp(1.8rem, 5vw, 2.8rem);
     color: var(--color-rojo-corazon);
-    text-shadow: 2px 2px 0px #f06292; /* Sombra del texto */
+    text-shadow: 2px 2px 0px #f06292;
     margin-bottom: 10px;
 }
 
 .mensaje-secundario {
-    font-family: 'Press Start 2P', cursive; /* Fuente pixel para el mensaje pequeño */
+    font-family: 'Press Start 2P', cursive;
     font-size: clamp(0.9rem, 2.2vw, 1.2rem);
     margin-top: 15px;
     color: var(--color-texto-oscuro);
