@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Para mi Pipita preciosa!</title>
+    <title>¡Atrápame si puedes! - Edición Mejorada</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="initial-screen">
-        <button id="mainButton">TOQUE AQUÍ</button>
+
+    <div class="background-gradient"></div>
+
+    <div id="initial-screen" class="screen active">
         <div id="color-lights"></div>
+        <button id="mainButton">¡Atrápame!</button>
     </div>
 
-    <div id="final-screen" class="hidden">
-        <div class="pixel-background"></div>
+    <div id="final-screen" class="screen">
         <div class="content">
-            <img src="flores_amarillas.JPG" alt="Ramo de flores amarillas" class="flowers pixel-art">
-            <div class="message-box">
-                <p class="main-message">Para mí Pipita preciosa ❤️</p>
-                <p class="sub-message">pd: esta vez son virtuales jijiji</p>
-            </div>
+            <h1>¡Lo lograste!</h1>
+            <p>¡Venciste al botón escurridizo!</p>
+            <button id="playAgainButton">Jugar de Nuevo</button>
         </div>
     </div>
 
