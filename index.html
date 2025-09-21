@@ -3,105 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorpresa de Flores</title>
-    <style>
-        /* Estilos generales y de la fuente */
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-        body {
-            font-family: 'Press Start 2P', cursive;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(45deg, #fec7d7, #a7e6ff, #f9f871);
-            text-align: center;
-        }
-
-        /* Estilo del botón */
-        .boton-flores {
-            padding: 15px 30px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 18px;
-            color: white;
-            background-color: #ff8fab;
-            border: 3px solid #333;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 5px 5px 0px #333;
-            transition: all 0.1s ease-in-out;
-        }
-
-        .boton-flores:active {
-            box-shadow: none;
-            transform: translate(5px, 5px);
-        }
-
-        /* Contenedor del mensaje (inicialmente oculto) */
-        #contenedor-sorpresa {
-            display: none; /* Oculto por defecto */
-            position: relative;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Imagen de las flores */
-        #contenedor-sorpresa img {
-            max-width: 90%;
-            height: auto;
-            border-radius: 15px;
-        }
-
-        /* Caja de texto sobre la imagen */
-        .caja-texto {
-            position: absolute;
-            bottom: 15%;
-            background-color: rgba(255, 255, 255, 0.95);
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 6px 6px 0px #000;
-            width: 80%;
-        }
-
-        .caja-texto p {
-            margin: 0;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-        }
-
-        .caja-texto .pd {
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
-    </style>
+    <title>Una Sorpresa para Ti ✨</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <button id="mostrarSorpresa" class="boton-flores">Tócame! 🌻</button>
+    <div id="pantalla-inicial" class="visible">
+        <button id="boton-movil">toca aquí</button>
+    </div>
 
-    <div id="contenedor-sorpresa">
-        <img src="URL_DE_TU_IMAGEN_EN_GITHUB" alt="Ramo de flores amarillas y blancas">
-
-        <div class="caja-texto">
-            <p>Para mí Pipita preciosa ❤️</p>
-            <p class="pd">pd: esta vez son virtuales jijijiji</p>
+    <div id="pantalla-final">
+        <div class="contenido-final">
+            <img src="flores_anarillas.PNG" alt="Ramo de flores amarillas pixel art" class="ramo-flores">
+            <div class="mensaje-principal">Para mí Pipita preciosa ❤️</div>
+            <div class="mensaje-secundario">pd: esta vez son virtuales jijiji</div>
         </div>
     </div>
 
-    <script>
-        // Lógica para mostrar la sorpresa
-        document.getElementById('mostrarSorpresa').addEventListener('click', function() {
-            // Oculta el botón
-            this.style.display = 'none';
-            
-            // Muestra el contenedor de la sorpresa
-            document.getElementById('contenedor-sorpresa').style.display = 'flex';
-        });
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
