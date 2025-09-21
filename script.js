@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const boton = document.getElementById('boton-magico'); // Id del botón actualizado
+    const boton = document.getElementById('boton-magico');
     const pantallaInicial = document.getElementById('pantalla-inicial');
     const pantallaFinal = document.getElementById('pantalla-final');
     
-    let intentosParaSorpresa = 0;
-    const movimientosAntesDeClic = 4; // Se moverá 4 veces
-    let yaActivado = false; // Bandera para evitar múltiples activaciones
+    let intentos = 0;
+    const movimientosAntesDeSorpresa = 4; // Se moverá 4 veces
+    let sorpresaActivada = false; // Bandera para evitar múltiples activaciones
 
     const moverBoton = () => {
         const viewWidth = window.innerWidth;
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnWidth = boton.clientWidth;
         const btnHeight = boton.clientHeight;
 
-        // Limita el rango de movimiento para que el botón esté siempre visible
         const nuevaPosX = Math.max(0, Math.random() * (viewWidth - btnWidth));
         const nuevaPosY = Math.max(0, Math.random() * (viewHeight - btnHeight));
 
@@ -22,46 +21,45 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const activarEfectos = () => {
-        if (yaActivado) return; // Si ya se activó, no hacer nada
-        yaActivado = true;
+        if (sorpresaActivada) return; // Si ya se activó, no hacer nada
+        sorpresaActivada = true;
 
-        boton.style.pointerEvents = 'none'; // Desactiva el botón
-        boton.classList.add('luces'); // Añade el efecto de luces
-        boton.textContent = '!!!'; // Cambia el texto del botón
+        boton.style.pointerEvents = 'none';
+        boton.classList.add('luces');
+        boton.textContent = '!!!';
 
-        // Inicia la transición de la pantalla después de un momento
         setTimeout(() => {
-            pantallaInicial.style.transform = 'scale(10)'; // Zoom hacia adentro más grande
+            pantallaInicial.style.transform = 'scale(10)';
             pantallaInicial.style.opacity = '0';
             
-            // Muestra la pantalla final cuando la primera ha desaparecido
             setTimeout(() => {
                 pantallaFinal.classList.add('visible');
-            }, 800); // Duración de la transición de pantalla inicial
-        }, 1800); // Tiempo que duran las luces antes del zoom
+            }, 800);
+        }, 1800);
     };
 
-    // Maneja los intentos de toque (mouseover)
-    boton.addEventListener('mouseenter', () => {
-        if (!yaActivado && intentosParaSorpresa < movimientosAntesDeClic) {
-            intentosParaSorpresa++;
-            moverBoton();
-        }
-    });
+    // Función unificada para manejar tanto clics de mouse como toques
+    const manejarIntento = (event) => {
+        // Prevenimos el comportamiento por defecto (como el zoom al doble toque en móviles)
+        event.preventDefault();
 
-    // El click final activa la animación si se han cumplido los movimientos
-    boton.addEventListener('click', () => {
-        if (!yaActivado && intentosParaSorpresa >= movimientosAntesDeClic) {
+        if (sorpresaActivada) return;
+
+        intentos++;
+
+        if (intentos <= movimientosAntesDeSorpresa) {
+            moverBoton();
+        } else {
             activarEfectos();
-        } else if (!yaActivado && intentosParaSorpresa < movimientosAntesDeClic) {
-             // Si hacen click antes de los 4 movimientos, lo volvemos a mover
-            intentosParaSorpresa++;
-            moverBoton();
         }
-    });
+    };
 
-    // Aseguramos la posición inicial del botón en el centro
-    function centrarBotonInicialmente() {
+    // Asignamos la misma función a ambos eventos
+    boton.addEventListener('mousedown', manejarIntento); // Para clics de mouse
+    boton.addEventListener('touchstart', manejarIntento); // Para toques en pantalla
+
+    // Función para centrar el botón
+    const centrarBoton = () => {
         const viewWidth = window.innerWidth;
         const viewHeight = window.innerHeight;
         const btnWidth = boton.clientWidth;
@@ -69,9 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         boton.style.left = `${(viewWidth - btnWidth) / 2}px`;
         boton.style.top = `${(viewHeight - btnHeight) / 2}px`;
-    }
+    };
 
-    // Centrar el botón al cargar y al redimensionar la ventana
-    window.addEventListener('load', centrarBotonInicialmente);
-    window.addEventListener('resize', centrarBotonInicialmente);
+    window.addEventListener('load', centrarBoton);
+    window.addEventListener('resize', centrarBoton);
 });
