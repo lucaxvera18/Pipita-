@@ -1,9 +1,24 @@
+:root {
+    --color-dorado-claro: #ffdd44;
+    --color-dorado-medio: #f7b733;
+    --color-dorado-oscuro: #d48c0d;
+    --color-dorado-sombra: #a16c0b;
+    --color-blanco-reflejo: rgba(255, 255, 255, 0.7);
+    --color-fondo-inicial: #2c3e50;
+    --color-pastel-claro: #fcf4f7; /* Rosa muy claro */
+    --color-pastel-medio: #fbe6ec; /* Rosa un poco más oscuro */
+    --color-pastel-oscuro: #d9a7c7; /* Morado pastel */
+    --color-rojo-corazon: #e91e63;
+    --color-texto-oscuro: #4a4a4a;
+}
+
 body {
     margin: 0;
     overflow: hidden;
-    font-family: 'VT323', monospace;
+    font-family: 'Fredoka One', cursive; /* Fuente general más moderna */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-fondo-inicial);
 }
 
 /* --- Pantalla Inicial --- */
@@ -13,51 +28,71 @@ body {
     align-items: center;
     height: 100vh;
     width: 100vw;
-    background: #1e1e1e;
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    background: var(--color-fondo-inicial);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-#boton-movil {
-    padding: 18px 35px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 16px;
+#boton-magico {
+    padding: 20px 40px;
+    font-family: 'Press Start 2P', cursive; /* Fuente pixel para el botón */
+    font-size: 18px;
     color: #fff;
-    background: #f7b733;
+    background-color: var(--color-dorado-medio);
     border: none;
-    border-bottom: 6px solid #d48c0d;
-    border-right: 6px solid #d48c0d;
-    border-top: 2px solid #ffde7a;
-    border-left: 2px solid #ffde7a;
-    border-radius: 0;
+    border-radius: 10px; /* Bordes redondeados para un look más suave */
     cursor: pointer;
-    position: absolute; /* 'absolute' es clave para moverlo */
-    text-shadow: 2px 2px #c2810c;
-    transition: all 0.2s ease-in-out;
-    image-rendering: pixelated;
-    user-select: none; /* Evita que el texto se seleccione */
+    position: absolute;
+    text-shadow: 2px 2px var(--color-dorado-sombra);
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transición suave */
+    user-select: none;
     -webkit-user-select: none;
+    
+    /* Estilo 3D */
+    box-shadow: 
+        inset 0 -8px 0 rgba(0,0,0,0.3), /* Sombra inferior */
+        0 8px 0 var(--color-dorado-sombra), /* Sombra exterior para profundidad */
+        0 15px 25px rgba(0,0,0,0.4); /* Sombra flotante */
+    transform: translateY(0); /* Posición inicial para la animación de click */
 }
 
-#boton-movil:active {
-    transform: translateY(4px);
-    border-bottom-width: 2px;
+/* Efecto de reflejo blanco tipo pixel art */
+#boton-magico::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10%;
+    width: 80%;
+    height: 8px;
+    background: var(--color-blanco-reflejo);
+    border-radius: 5px;
+    transform: skewX(-20deg); /* Menos inclinación para un reflejo más suave */
+    filter: blur(1px); /* Suaviza el reflejo */
 }
 
+#boton-magico:active {
+    transform: translateY(4px); /* Efecto de presionar el botón */
+    box-shadow: 
+        inset 0 -4px 0 rgba(0,0,0,0.3),
+        0 4px 0 var(--color-dorado-sombra),
+        0 8px 15px rgba(0,0,0,0.3);
+}
+
+/* Animaciones de luces y latido */
 .luces {
-    animation: luces-coloridas 0.9s infinite linear, latido 0.9s infinite linear;
+    animation: luces-coloridas 1s infinite linear, latido 1s infinite ease-in-out;
 }
 
 @keyframes luces-coloridas {
-    0%   { box-shadow: 0 0 25px 12px #ff00de, inset 0 0 10px #ff00de; }
-    25%  { box-shadow: 0 0 25px 12px #00f2ff, inset 0 0 10px #00f2ff; }
-    50%  { box-shadow: 0 0 25px 12px #88ff00, inset 0 0 10px #88ff00; }
-    75%  { box-shadow: 0 0 25px 12px #ff8000, inset 0 0 10px #ff8000; }
-    100% { box-shadow: 0 0 25px 12px #ff00de, inset 0 0 10px #ff00de; }
+    0%   { box-shadow: 0 0 30px 15px #ff00de, inset 0 0 15px #ff00de; }
+    25%  { box-shadow: 0 0 30px 15px #00f2ff, inset 0 0 15px #00f2ff; }
+    50%  { box-shadow: 0 0 30px 15px #88ff00, inset 0 0 15px #88ff00; }
+    75%  { box-shadow: 0 0 30px 15px #ff8000, inset 0 0 15px #ff8000; }
+    100% { box-shadow: 0 0 30px 15px #ff00de, inset 0 0 15px #ff00de; }
 }
 
 @keyframes latido {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.05); } /* Latido más sutil */
 }
 
 /* --- Pantalla Final --- */
@@ -70,11 +105,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #f5e3e6, #d9a7c7);
+    background: linear-gradient(135deg, var(--color-pastel-claro), var(--color-pastel-oscuro));
     transform: scale(0);
     opacity: 0;
-    visibility: hidden; /* Oculta la pantalla para que no interfiera */
-    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease-in, visibility 0s 0.6s;
+    visibility: hidden;
+    transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease-in, visibility 0s 0.7s;
+    overflow: hidden; /* Para que los brillos no se salgan */
 }
 
 #pantalla-final.visible {
@@ -84,12 +120,39 @@ body {
     transition-delay: 0s;
 }
 
+/* Brillantes de fondo */
+.brillos-fondo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden; /* Asegura que los brillos no se salgan */
+    background: 
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,0.2) 2%, transparent 10%),
+        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.15) 3%, transparent 12%),
+        radial-gradient(circle at 40% 60%, rgba(255,255,255,0.1) 2.5%, transparent 15%),
+        radial-gradient(circle at 85% 25%, rgba(255,255,255,0.25) 2%, transparent 10%);
+    background-size: 800% 800%; /* Para que las estrellas se muevan */
+    animation: mover-brillos 20s linear infinite;
+}
+
+@keyframes mover-brillos {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+
 .contenido-final {
     text-align: center;
     transform: scale(0.5);
     opacity: 0;
-    transition: all 0.5s ease-out 0.4s;
-    padding: 20px;
+    transition: all 0.6s ease-out 0.5s; /* Retraso para que aparezca después del zoom */
+    padding: 25px;
+    z-index: 1; /* Asegura que el contenido esté por encima de los brillos */
+    background: rgba(255, 255, 255, 0.5); /* Fondo semitransparente para el contenido */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 90%; /* Ancho máximo para el cartel */
 }
 
 #pantalla-final.visible .contenido-final {
@@ -98,22 +161,32 @@ body {
 }
 
 .ramo-flores {
-    width: 200px;
+    width: 220px; /* Tamaño un poco más grande */
     height: auto;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     image-rendering: pixelated;
-    filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2));
+    filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.3)); /* Sombra más pronunciada */
+}
+
+.cartel-mensaje {
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente para el cartel */
+    border-radius: 10px;
+    padding: 20px 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .mensaje-principal {
-    font-family: 'Press Start 2P', cursive;
-    font-size: clamp(1.5rem, 4vw, 2.2rem); /* Se adapta al tamaño de pantalla */
-    color: #fff;
-    text-shadow: 3px 3px 0px #d6336c, 6px 6px 0px rgba(0,0,0,0.1);
+    font-family: 'Fredoka One', cursive; /* Fuente más amigable para el mensaje principal */
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--color-rojo-corazon);
+    text-shadow: 2px 2px 0px #f06292; /* Sombra del texto */
+    margin-bottom: 10px;
 }
 
 .mensaje-secundario {
-    font-size: clamp(1rem, 2.5vw, 1.5rem); /* También adaptable */
-    margin-top: 20px;
-    color: #4a4a4a;
+    font-family: 'Press Start 2P', cursive; /* Fuente pixel para el mensaje pequeño */
+    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+    margin-top: 15px;
+    color: var(--color-texto-oscuro);
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
 }
