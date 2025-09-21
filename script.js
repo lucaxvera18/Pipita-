@@ -1,137 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Configuración del juego ---
-    const MAX_CLICKS = 3;
-    const PARTICLE_COUNT = 70;
-    const PARTICLE_GENERATION_SPEED_MS = 30;
-    const SPREAD_RADIUS = 180;
-    // MEJORA: Paleta de colores para un efecto más estético
-    const COLOR_PALETTE = ['#8e44ad', '#3498db', '#e74c3c', '#f1c40f', '#2ecc71', '#ffffff'];
+    const boton = document.getElementById('boton-movil');
+    const pantallaInicial = document.getElementById('pantalla-inicial');
+    const pantallaFinal = document.getElementById('pantalla-final');
+    const contenidoFinal = document.querySelector('.contenido-final');
+    
+    let intentos = 0;
+    const maxIntentos = 4; // El cuarto intento será el definitivo
 
-    // --- Selectores del DOM ---
-    const mainButton = document.getElementById('mainButton');
-    const playAgainButton = document.getElementById('playAgainButton');
-    const initialScreen = document.getElementById('initial-screen');
-    const finalScreen = document.getElementById('final-screen');
-    const colorLightsContainer = document.getElementById('color-lights');
+    // El evento 'mouseenter' es más sensible que 'mouseover'
+    boton.addEventListener('mouseenter', () => {
+        if (intentos < maxIntentos - 1) {
+            intentos++;
+            moverBoton();
+        } else if (intentos === maxIntentos - 1) {
+            // Prepara para el último clic
+            intentos++;
+        }
+    });
 
-    let clickCount = 0;
-    let lastButtonPosition = { x: 0, y: 0 };
-
-    /**
-     * Elige un color aleatorio de la paleta definida.
-     */
-    function getRandomColor() {
-        return COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)];
-    }
-
-    /**
-     * Crea una partícula de luz con duración y tamaño aleatorios.
-     */
-    function createLightParticle(x, y) {
-        const light = document.createElement('div');
-        light.classList.add('light-particle');
-        const size = Math.random() * 35 + 10;
-        // MEJORA: Duración de animación aleatoria para un efecto más natural
-        const duration = Math.random() * 1.5 + 0.8;
-        
-        light.style.width = `${size}px`;
-        light.style.height = `${size}px`;
-        light.style.backgroundColor = getRandomColor();
-        light.style.left = `${x - size / 2}px`;
-        light.style.top = `${y - size / 2}px`;
-        light.style.animationDuration = `${duration}s`;
-        
-        colorLightsContainer.appendChild(light);
-        light.addEventListener('animationend', () => light.remove());
-    }
-
-    /**
-     * Mueve el botón a una posición aleatoria con rotación y escala.
-     */
-    function moveButton() {
-        const buttonRect = mainButton.getBoundingClientRect();
-        const maxX = window.innerWidth - buttonRect.width;
-        const maxY = window.innerHeight - buttonRect.height;
-        
-        const newX = Math.random() * maxX;
-        const newY = Math.random() * maxY;
-        // MEJORA: Añade rotación y escala aleatorias para un movimiento más dinámico
-        const rotation = (Math.random() - 0.5) * 30; // Rota entre -15 y +15 grados
-        
-        mainButton.style.transition = 'all 0.3s ease-out';
-        mainButton.style.top = `${newY}px`;
-        mainButton.style.left = `${newX}px`;
-        mainButton.style.transform = `rotate(${rotation}deg)`;
-    }
-
-    /**
-     * Desencadena la animación final de partículas.
-     */
-    function triggerFinalAnimation() {
-        const buttonRect = mainButton.getBoundingClientRect();
-        lastButtonPosition.x = buttonRect.left + buttonRect.width / 2;
-        lastButtonPosition.y = buttonRect.top + buttonRect.height / 2;
-
-        let lightCount = 0;
-        const lightInterval = setInterval(() => {
-            const randomX = lastButtonPosition.x + (Math.random() - 0.5) * SPREAD_RADIUS * 2;
-            const randomY = lastButtonPosition.y + (Math.random() - 0.5) * SPREAD_RADIUS * 2;
-            createLightParticle(randomX, randomY);
-            
-            if (++lightCount >= PARTICLE_COUNT) {
-                clearInterval(lightInterval);
-                setTimeout(showFinalScreen, 800);
+    boton.addEventListener('click', () => {
+        if (intentos >= maxIntentos) {
+            // Evita que la función se llame múltiples veces
+            if (!boton.classList.contains('luces')) {
+                activarEfectos();
             }
-        }, PARTICLE_GENERATION_SPEED_MS);
-    }
-    
-    /**
-     * Oculta la pantalla inicial y muestra la final con una transición suave.
-     */
-    function showFinalScreen() {
-        initialScreen.classList.remove('active');
-        finalScreen.classList.add('active');
-    }
-
-    /**
-     * MEJORA: Función para reiniciar el juego.
-     */
-    function resetGame() {
-        clickCount = 0;
-        finalScreen.classList.remove('active');
-        initialScreen.classList.add('active');
-        mainButton.style.display = 'block'; // Vuelve a mostrar el botón
-        mainButton.style.transform = 'rotate(0deg) scale(1)'; // Resetea la transformación
-        setTimeout(moveButton, 500); // Lo mueve a una nueva posición
-    }
-
-    // --- Event Listeners ---
-    mainButton.addEventListener('mouseenter', () => {
-        if (clickCount < MAX_CLICKS) {
-            moveButton();
         }
     });
 
-    mainButton.addEventListener('click', () => {
-        clickCount++;
-        if (clickCount >= MAX_CLICKS) {
-            mainButton.style.display = 'none'; // Oculta el botón antes de la animación
-            triggerFinalAnimation();
-        } else {
-            moveButton();
-        }
-    });
+    function moverBoton() {
+        const viewWidth = window.innerWidth;
+        const viewHeight = window.innerHeight;
+        const btnWidth = boton.clientWidth;
+        const btnHeight = boton.clientHeight;
 
-    window.addEventListener('resize', () => {
-        if (clickCount < MAX_CLICKS) {
-            mainButton.style.transition = 'none';
-            moveButton();
-        }
-    });
-    
-    playAgainButton.addEventListener('click', resetGame);
+        // Nuevas coordenadas aleatorias
+        const nuevaPosX = Math.random() * (viewWidth - btnWidth);
+        const nuevaPosY = Math.random() * (viewHeight - btnHeight);
 
-    // --- Inicio del juego ---
-    initialScreen.classList.add('active');
-    setTimeout(moveButton, 500); // Posición inicial aleatoria
+        boton.style.left = `${nuevaPosX}px`;
+        boton.style.top = `${nuevaPosY}px`;
+    }
+
+    function activarEfectos() {
+        // 1. Desactivamos eventos y añadimos el efecto de luces
+        boton.style.pointerEvents = 'none';
+        boton.classList.add('luces');
+        
+        // 2. Iniciamos la transición de la pantalla
+        setTimeout(() => {
+            pantallaInicial.style.transform = 'scale(5)'; // Efecto de zoom hacia adentro
+            pantallaInicial.style.opacity = '0';
+            
+            // 3. Mostramos la pantalla final cuando la primera ha desaparecido
+            setTimeout(() => {
+                pantallaFinal.style.opacity = '1';
+                pantallaFinal.style.transform = 'scale(1)';
+                contenidoFinal.style.opacity = '1';
+                contenidoFinal.style.transform = 'scale(1)';
+            }, 700); // Sincronizado con la transición de la pantalla inicial
+        }, 1500); // Duración del efecto de luces
+    }
 });
