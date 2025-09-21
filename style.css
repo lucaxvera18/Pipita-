@@ -7,9 +7,10 @@
     --text-font: 'DotGothic16', sans-serif;
     --dark-blue: #2c3e50;
     --medium-blue: #34495e;
-    --gold: #ffd700;
-    --gold-dark: #c5a100;
-    --shine: #fff_de; /* _de es hexadecimal para 87% de opacidad */
+    --gold: #ffcf40; /* Tono de oro ligeramente más claro para el botón */
+    --gold-dark: #cc9900; /* Tono oscuro para el borde inferior */
+    --shine: #ffffff; /* Blanco puro para el reflejo */
+    --highlight: #ffeeaa; /* Tono de luz para el texto del botón */
 }
 
 body {
@@ -36,38 +37,44 @@ body {
 /* --- BOTÓN PIXEL ART CON PURO CSS --- */
 #mainButton {
     position: absolute;
-    border: 4px solid black;
-    border-radius: 12px;
+    /* Borde pixel art */
+    border-top: 4px solid #fff;
+    border-left: 4px solid #fff;
+    border-right: 4px solid #000;
+    border-bottom: 4px solid #000;
+    
     padding: 20px 30px;
     font-family: var(--pixel-font);
     font-size: 24px;
-    color: black;
+    color: #222; /* Color de texto oscuro para el botón */
     cursor: pointer;
-    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+    background-color: var(--gold); /* Fondo dorado sólido */
     box-shadow: 
-        inset -4px -4px 0px 0px var(--gold-dark), 
-        inset 4px 4px 0px 0px #fff_55; /* _55 es hexadecimal para 33% de opacidad */
-    text-shadow: 2px 2px #fff_77; /* _77 es hexadecimal para 47% de opacidad */
-    transition: transform 0.1s ease-out;
+        4px 4px 0px 0px rgba(0,0,0,0.5); /* Sombra para efecto 3D */
+    text-shadow: 1px 1px var(--highlight); /* Pequeña sombra clara para el texto */
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
     z-index: 10;
 }
 
 #mainButton:active {
-    transform: scale(0.98);
-    box-shadow: inset -2px -2px 0px 0px var(--gold-dark);
+    transform: translate(2px, 2px); /* Simula el botón "presionado" */
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.5); /* Sombra más pequeña al presionar */
 }
 
+/* Reflejo blanco */
 #mainButton::before {
     content: '';
     position: absolute;
     top: 4px;
     left: 4px;
     width: calc(100% - 8px);
-    height: 50%;
-    background: linear-gradient(180deg, var(--shine) 0%, transparent 100%);
-    border-radius: 8px 8px 0 0;
+    height: 40%; /* Altura del reflejo */
+    background: linear-gradient(to bottom, var(--shine) 0%, rgba(255,255,255,0.0) 100%);
+    opacity: 0.7;
     pointer-events: none;
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); /* Forma irregular del reflejo */
 }
+
 
 /* --- EFECTO DE LUCES (sin cambios) --- */
 #color-lights {
@@ -100,18 +107,46 @@ body {
     transform: scale(0.5);
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     z-index: 100;
+    /* Fondo pastel y brillos - igual que en la imagen */
+    background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #ffe4e1, #fffacd);
+    background-size: 400% 400%; /* Para el movimiento del gradiente */
+    animation: gradientShift 10s ease infinite; /* Animación sutil de fondo */
 }
+
+/* Animación sutil del gradiente */
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* Brillitos en el fondo - los hago más sutiles y animados */
+#final-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 70% 40%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 50% 10%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 1px, transparent 1px),
+        radial-gradient(circle at 60% 90%, rgba(255,255,255,0.2) 1px, transparent 1px);
+    background-size: 70px 70px; /* Espaciado de los brillos */
+    animation: sparkle 15s infinite alternate; /* Animación de brillos */
+    pointer-events: none;
+}
+
+@keyframes sparkle {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; } /* Mueve los brillos */
+}
+
 
 #final-screen.active {
     opacity: 1;
     transform: scale(1);
-}
-
-.pixel-background {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #ffe4e1, #fffacd);
-    z-index: -1;
 }
 
 #final-screen .content {
@@ -121,71 +156,74 @@ body {
     gap: 20px;
 }
 
-/* --- FLORES CON SVG Y CSS --- */
-.flowers-svg {
-    width: 280px;
-    filter: drop-shadow(5px 5px 0px #000_33); /* _33 es hexadecimal para 20% de opacidad */
-    animation: gentle-bob 4s ease-in-out infinite;
+/* --- FLORES CON IMAGEN --- */
+.flowers {
+    max-width: 350px; /* Tamaño de las flores */
+    height: auto;
+    image-rendering: pixelated; /* ¡Crucial para el pixel art! */
+    filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.3)); /* Sombra para darle profundidad */
 }
 
-.stems path {
-    fill: none;
-    stroke: #2e8b57; /* Verde tallo */
-    stroke-width: 5;
-    stroke-linecap: round;
-}
-
-.flower .petal { fill: var(--gold); }
-.flower .center { fill: #8b4513; } /* Marrón */
-
-@keyframes gentle-bob {
-    0%, 100% { transform: translateY(0) rotate(-1deg); }
-    50% { transform: translateY(-10px) rotate(1deg); }
-}
-
-/* --- CAJA DE MENSAJE MEJORADA --- */
+/* --- CAJA DE MENSAJE (ajustada a la imagen) --- */
 .message-box {
-    background-color: #fff_ee; /* _ee es hexadecimal para 93% de opacidad */
-    border: 4px solid black;
-    padding: 20px 30px;
+    background-color: rgba(255, 255, 255, 0.9); /* Blanco semitransparente */
+    border: 3px solid #666; /* Borde más sutil para el cartel */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    padding: 15px 25px;
     text-align: center;
     max-width: 90vw;
-    box-shadow: 8px 8px 0px #000_44; /* _44 es hexadecimal para 27% de opacidad */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.3); /* Sombra para efecto 3D */
+    position: relative;
+    /* Efecto de borde escalonado (pixel art) */
+    outline: 2px solid #333; /* Un "borde" interior */
+    outline-offset: -5px; /* Para que se vea dentro del borde principal */
 }
+
 
 .main-message {
     font-family: var(--pixel-font);
-    font-size: 1.2em;
-    color: #e76f51;
+    font-size: 1.1em; /* Ajuste de tamaño */
+    color: #333; /* Color oscuro */
+    margin-bottom: 5px; /* Espacio entre mensajes */
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.5); /* Sombra ligera al texto */
 }
 
 .sub-message {
     font-family: var(--text-font);
-    font-size: 0.9em;
-    color: #333;
-    margin-top: 10px;
+    font-size: 0.8em;
+    color: #555;
+    margin-top: 5px;
 }
 
 /* --- RESPONSIVIDAD PARA MÓVILES --- */
 @media (max-width: 768px) {
     #mainButton {
-        font-size: 16px;
-        padding: 15px 20px;
+        font-size: 18px;
+        padding: 15px 25px;
+        border-width: 3px;
+    }
+    #mainButton::before {
+        top: 3px;
+        left: 3px;
+        width: calc(100% - 6px);
     }
 
-    .flowers-svg {
-        width: 220px;
+    .flowers {
+        max-width: 250px;
     }
 
     .message-box {
-        padding: 15px 20px;
+        padding: 12px 20px;
+        border-width: 2px;
+        outline: 1px solid #333;
+        outline-offset: -3px;
     }
 
     .main-message {
-        font-size: 1em;
+        font-size: 0.9em;
     }
 
     .sub-message {
-        font-size: 0.8em;
+        font-size: 0.7em;
     }
 }
