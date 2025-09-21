@@ -1,63 +1,81 @@
-/* Importar fuentes Pixel Art */
+/* --- ESTILOS GENERALES Y FUENTES --- */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
+:root {
+    --pixel-font: 'Press Start 2P', cursive;
+    --text-font: 'DotGothic16', sans-serif;
+    --dark-blue: #2c3e50;
+    --medium-blue: #34495e;
+    --gold: #ffd700;
+    --gold-dark: #c5a100;
+    --shine: #fff_de; /* _de es hexadecimal para 87% de opacidad */
+}
+
 body {
     margin: 0;
-    overflow: hidden; /* Evita scroll si el contenido se desborda */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #2c3e50; /* Un color de fondo para la pantalla inicial */
-    font-family: 'Press Start 2P', cursive;
-    color: white;
+    overflow: hidden;
+    background-color: var(--dark-blue);
+    font-family: var(--pixel-font);
 }
 
 .hidden {
-    display: none !important; /* Fuerza a que el elemento esté oculto */
+    display: none !important;
 }
 
-/* --- ESTILOS PANTALLA INICIAL --- */
+/* --- PANTALLA INICIAL --- */
 #initial-screen {
     position: relative;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #34495e; /* Fondo de la pantalla inicial */
-    transition: background-color 0.5s ease-in-out;
+    display: grid;
+    place-items: center;
+    background-color: var(--medium-blue);
 }
 
+/* --- BOTÓN PIXEL ART CON PURO CSS --- */
 #mainButton {
-    position: absolute; /* Para que podamos moverlo libremente con JS */
-    border: none;
-    background: none;
+    position: absolute;
+    border: 4px solid black;
+    border-radius: 12px;
+    padding: 20px 30px;
+    font-family: var(--pixel-font);
+    font-size: 24px;
+    color: black;
     cursor: pointer;
-    padding: 0;
-    z-index: 10; /* Para que esté por encima de las luces */
+    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+    box-shadow: 
+        inset -4px -4px 0px 0px var(--gold-dark), 
+        inset 4px 4px 0px 0px #fff_55; /* _55 es hexadecimal para 33% de opacidad */
+    text-shadow: 2px 2px #fff_77; /* _77 es hexadecimal para 47% de opacidad */
+    transition: transform 0.1s ease-out;
+    z-index: 10;
 }
 
-#mainButton img {
-    width: 250px; /* Tamaño del botón */
-    height: auto;
-    display: block;
-    image-rendering: pixelated; /* ¡Importante para mantener el estilo pixel art! */
-    transition: transform 0.1s ease-out; /* Pequeño efecto al hacer click */
-}
-
-#mainButton img:active {
+#mainButton:active {
     transform: scale(0.98);
+    box-shadow: inset -2px -2px 0px 0px var(--gold-dark);
 }
 
-/* Luces de colores */
+#mainButton::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(100% - 8px);
+    height: 50%;
+    background: linear-gradient(180deg, var(--shine) 0%, transparent 100%);
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+}
+
+/* --- EFECTO DE LUCES (sin cambios) --- */
 #color-lights {
     position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    pointer-events: none; /* Las luces no interfieren con el click del botón */
+    pointer-events: none;
 }
 
 .light-particle {
@@ -65,34 +83,23 @@ body {
     border-radius: 50%;
     animation: fadeOutAndShrink 1s forwards;
     opacity: 0.8;
-    filter: blur(2px); /* Un pequeño blur para el efecto de luz */
+    filter: blur(2px);
 }
 
 @keyframes fadeOutAndShrink {
-    0% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(0);
-        opacity: 0;
-    }
+    to { transform: scale(0); opacity: 0; }
 }
 
-/* --- ESTILOS PANTALLA FINAL --- */
+/* --- PANTALLA FINAL --- */
 #final-screen {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0; /* Empieza oculto y con opacidad 0 */
-    transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Transiciones para el zoom y fade */
-    transform: scale(0.5); /* Empieza escalado para el efecto de zoom */
-    z-index: 100; /* Asegurarse de que esté por encima de todo */
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    z-index: 100;
 }
 
 #final-screen.active {
@@ -102,117 +109,83 @@ body {
 
 .pixel-background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #ffe4e1, #fffacd); /* Colores pastel */
-    filter: contrast(110%) saturate(120%); /* Ligeros ajustes para vibrancia */
-    z-index: -1; /* Para que el contenido esté por encima */
-    opacity: 0.8; /* Suaviza el fondo */
+    inset: 0;
+    background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #ffe4e1, #fffacd);
+    z-index: -1;
 }
-
-/* Brillitos en el fondo */
-.pixel-background::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 1px, transparent 1px),
-        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.2) 1px, transparent 1px),
-        radial-gradient(circle at 70% 40%, rgba(255,255,255,0.2) 1px, transparent 1px),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 1px, transparent 1px),
-        radial-gradient(circle at 50% 10%, rgba(255,255,255,0.2) 1px, transparent 1px);
-    background-size: 50px 50px; /* Espaciado de los brillos */
-    animation: sparkle 10s infinite alternate; /* Animación de brillos */
-}
-
-@keyframes sparkle {
-    0% { background-position: 0 0; }
-    100% { background-position: 50px 50px; } /* Mueve los brillos ligeramente */
-}
-
 
 #final-screen .content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Espacio entre las flores y el mensaje */
-    transform: translateY(-20px); /* Ajuste vertical */
+    gap: 20px;
 }
 
-.flowers {
-    max-width: 350px; /* Tamaño de las flores */
-    height: auto;
-    image-rendering: pixelated; /* ¡Crucial para el pixel art! */
-    filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); /* Sombra para darle profundidad */
+/* --- FLORES CON SVG Y CSS --- */
+.flowers-svg {
+    width: 280px;
+    filter: drop-shadow(5px 5px 0px #000_33); /* _33 es hexadecimal para 20% de opacidad */
+    animation: gentle-bob 4s ease-in-out infinite;
 }
 
+.stems path {
+    fill: none;
+    stroke: #2e8b57; /* Verde tallo */
+    stroke-width: 5;
+    stroke-linecap: round;
+}
+
+.flower .petal { fill: var(--gold); }
+.flower .center { fill: #8b4513; } /* Marrón */
+
+@keyframes gentle-bob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+/* --- CAJA DE MENSAJE MEJORADA --- */
 .message-box {
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
-    border: 5px solid #a8dadc; /* Borde estilo pixel art */
+    background-color: #fff_ee; /* _ee es hexadecimal para 93% de opacidad */
+    border: 4px solid black;
     padding: 20px 30px;
-    border-radius: 10px;
     text-align: center;
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.3); /* Sombra para efecto 3D */
-    font-size: 1.5em;
-    color: #333;
-    position: relative;
-    max-width: 80vw; /* Responsivo */
-    image-rendering: pixelated; /* Mantiene la nitidez */
-}
-
-.message-box::before { /* Esquina superior izquierda */
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    top: -5px;
-    left: -5px;
-    border-top: 5px solid #a8dadc;
-    border-left: 5px solid #a8dadc;
-}
-.message-box::after { /* Esquina inferior derecha */
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    bottom: -5px;
-    right: -5px;
-    border-bottom: 5px solid #a8dadc;
-    border-right: 5px solid #a8dadc;
+    max-width: 90vw;
+    box-shadow: 8px 8px 0px #000_44; /* _44 es hexadecimal para 27% de opacidad */
 }
 
 .main-message {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 1.2em; /* Tamaño del mensaje principal */
-    margin-bottom: 10px;
-    color: #e76f51; /* Color rojo para el corazón */
+    font-family: var(--pixel-font);
+    font-size: 1.2em;
+    color: #e76f51;
 }
 
 .sub-message {
-    font-family: 'DotGothic16', sans-serif; /* Otra fuente pixel para el mensaje pequeño */
-    font-size: 0.8em;
-    color: #555;
-    margin-top: 5px;
+    font-family: var(--text-font);
+    font-size: 0.9em;
+    color: #333;
+    margin-top: 10px;
 }
 
-/* Responsividad básica */
+/* --- RESPONSIVIDAD PARA MÓVILES --- */
 @media (max-width: 768px) {
-    #mainButton img {
-        width: 180px;
+    #mainButton {
+        font-size: 16px;
+        padding: 15px 20px;
     }
-    .flowers {
-        max-width: 250px;
+
+    .flowers-svg {
+        width: 220px;
     }
+
     .message-box {
         padding: 15px 20px;
     }
+
     .main-message {
-        font-size: 0.9em;
+        font-size: 1em;
     }
+
     .sub-message {
-        font-size: 0.7em;
+        font-size: 0.8em;
     }
 }
